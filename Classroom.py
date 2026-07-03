@@ -23,7 +23,19 @@ info = {
 # Add info
 # Add info
 def add_info():
-    pass
+    print("\n===== ADD NEW STUDENT =====")
+
+    name = input("Enter Student Name: ")
+    student_class = input("Enter Class: ")
+    academics = input("Enter Academics Description: ")
+
+    info[name] = {
+        "Name": name,
+        "Class": student_class,
+        "Academics": academics
+    }
+
+    print(f"\n{name} has been added successfully!")
 
 # Delete info
 def delete_info(name):
