@@ -10,7 +10,9 @@ menu = {
     "Cold Coffee" : 80,
 }
 
+
 # Limitation is it currently use for single item at once
+
 
 print(f"~Welcome to The Rotash Restaurent\n")
 print("~Here is the menu")
@@ -44,7 +46,6 @@ wd = Tk()
 wd.geometry("420x420")
 wd.title("Harsh Tiwari")
 wd.config(background="skyblue",border=2)
-
 
 order_item.set(order_item)
 lbl = Label(wd,
