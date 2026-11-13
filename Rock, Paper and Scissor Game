@@ -1,111 +1,136 @@
-from tkinter import *
 import random
+import tkinter as tk
 
-wd = Tk()
-wd.geometry("420x420")
-wd.title("Harsh Tiwari")
-wd.config(background="skyblue",border=2)
 
-#LOGIC PART
-user_choice = StringVar()
-result_text = StringVar()
-comp_choice = StringVar()
+BACKGROUND = "#101827"
+CARD = "#1c2940"
+TEXT = "#f3f6fc"
+MUTED = "#a9b5c9"
+ACCENT = "#6c8cff"
+
+wd = tk.Tk()
+wd.title("Rock, Paper, Scissors")
+wd.geometry("560x520")
+wd.minsize(500, 480)
+wd.configure(bg=BACKGROUND)
+
+user_choice = tk.StringVar(value="You: —")
+comp_choice = tk.StringVar(value="Computer: —")
+result_text = tk.StringVar(value="Choose your move to play")
 
 
 def play(choice):
-    options = ["Rock", "Paper", "Scissor"]
-    comp = random.choice(options)
-    user_choice.set(f"You choose: {choice}")
-    comp_choice.set(f"computer choose: {comp}")
+    comp = random.choice(["Rock", "Paper", "Scissors"])
+    user_choice.set(f"You: {choice}")
+    comp_choice.set(f"Computer: {comp}")
+
     if choice == comp:
-        result = "It's a Tie!"
-    elif (choice == "Rock" and comp == "Scissor") or \
-         (choice == "Paper" and comp == "Rock") or \
-         (choice == "Scissor" and comp == "Paper"):
-        result = "You Win!"
+        result_text.set("It's a tie!")
+        result_label.configure(fg="#f6c85f")
+    elif (
+        (choice == "Rock" and comp == "Scissors")
+        or (choice == "Paper" and comp == "Rock")
+        or (choice == "Scissors" and comp == "Paper")
+    ):
+        result_text.set("You win!")
+        result_label.configure(fg="#59d69b")
     else:
-        result = "Computer Wins!"
-    result_text.set(result)
+        result_text.set("Computer wins!")
+        result_label.configure(fg="#ff7777")
 
 
-lbl = Label(wd,
-            text = "Rock, Paper and Scissor Game",
-            fg="black",
-            bg="#BEF46E",
-            font=("Arial",40,"bold"),
-            relief="ridge",
-            padx=10,
-            bd=10)
-lbl.pack()
+content = tk.Frame(wd, bg=BACKGROUND, padx=32, pady=28)
+content.pack(fill="both", expand=True)
 
-# BUTTONS PART
+tk.Label(
+    content,
+    text="ROCK  •  PAPER  •  SCISSORS",
+    bg=BACKGROUND,
+    fg=TEXT,
+    font=("Arial", 25, "bold"),
+).pack(pady=(8, 4))
 
-btn_frame = Frame(wd, bg="skyblue")
-btn_frame.pack(pady=20)
-btn_rock = Button(btn_frame,
-             text="Rock",
-            fg="yellow",
-            bg="#77A2F2",
-            font=("Arial",20,"bold"),
-            activebackground="skyblue",
-            relief="raised",
-            padx=10,
-            command=lambda: play("Rock"),)
-btn_rock.pack(padx=10,side=LEFT)
+tk.Label(
+    content,
+    text="Make your move",
+    bg=BACKGROUND,
+    fg=MUTED,
+    font=("Arial", 13),
+).pack(pady=(0, 25))
 
-btn_paper = Button(btn_frame,
-             text="Paper",
-            fg="yellow",
-            bg="#77A2F2",
-            font=("Arial",20,"bold"),
-            activebackground="skyblue",
-            relief="raised",
+button_frame = tk.Frame(content, bg=BACKGROUND)
+button_frame.pack(fill="x", pady=(0, 24))
 
-            padx=10,
-            command=lambda: play("Paper"),)
-btn_paper.pack(padx=10,side=LEFT)
 
-btn_Scissor = Button(btn_frame,
-             text="Scissor",
-            fg="yellow",
-            bg="#77A2F2",
-            font=("Arial",20,"bold"),
-            activebackground="skyblue",
-            relief="raised",
-            padx=10,
-            command=lambda: play("Scissor"),)
-btn_Scissor.pack(padx=10,side=LEFT)
+def add_choice_button(choice):
+    button = tk.Button(
+        button_frame,
+        text=choice,
+        command=lambda: play(choice),
+        bg="#ffffff",
+        fg=BACKGROUND,
+        activebackground="#dce5ff",
+        activeforeground=BACKGROUND,
+        font=("Arial", 16, "bold"),
+        relief="raised",
+        bd=2,
+        padx=14,
+        pady=18,
+        cursor="hand2",
+    )
+    button.pack(side="left", expand=True, fill="x", padx=6, ipady=6)
 
-# RESULT PART
 
-result_frame = Frame(wd,
-                     bg="grey")
-result_frame.pack()
-user_lbl = Label(result_frame,
-                 textvariable=user_choice,
-                 bg="skyblue",
-                 fg="black",
-                 font = ("Arial",20,"bold"),
-                 padx=20,
-                 bd=10)
-user_lbl.pack(pady = 10,side=LEFT)
+for move in ("Rock", "Paper", "Scissors"):
+    add_choice_button(move)
 
-comp_lbl = Label(result_frame,
-                 textvariable=comp_choice,
-                 bg="skyblue",
-                 fg="black",
-                 font = ("Arial",20,"bold"),
-                 padx=20,
-                 bd=10)
-comp_lbl.pack(pady = 10,side=LEFT)
+choices_card = tk.Frame(content, bg=CARD, padx=20, pady=17)
+choices_card.pack(fill="x", pady=(0, 18))
 
-result_lbl = Label(wd,
-                 textvariable=result_text,
-                 bg="#7A97F5",
-                 fg="black",
-                 font = ("Arial",20,"bold"),
-                 padx=20,
-                 bd=10)
-result_lbl.pack(pady=10)
+tk.Label(
+    choices_card,
+    text="YOUR CHOICE",
+    bg=CARD,
+    fg=MUTED,
+    font=("Arial", 10, "bold"),
+    anchor="w",
+).pack(fill="x", pady=5)
+
+tk.Label(
+    choices_card,
+    textvariable=user_choice,
+    bg=CARD,
+    fg=TEXT,
+    font=("Arial", 18, "bold"),
+    anchor="w",
+).pack(fill="x", pady=(0, 10))
+
+tk.Label(
+    choices_card,
+    text="COMPUTER'S CHOICE",
+    bg=CARD,
+    fg=MUTED,
+    font=("Arial", 10, "bold"),
+    anchor="w",
+).pack(fill="x", pady=5)
+
+tk.Label(
+    choices_card,
+    textvariable=comp_choice,
+    bg=CARD,
+    fg=TEXT,
+    font=("Arial", 18, "bold"),
+    anchor="w",
+).pack(fill="x", pady=(0, 5))
+
+result_label = tk.Label(
+    content,
+    textvariable=result_text,
+    bg=BACKGROUND,
+    fg=ACCENT,
+    font=("Arial", 21, "bold"),
+    pady=14,
+)
+result_label.pack()
 
 wd.mainloop()
